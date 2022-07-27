@@ -51,7 +51,8 @@ export default {
             id: null,
             productData: null,
             mode: true,
-            loading: true
+            loading: true,
+            
         }
     },
     methods: {
@@ -72,33 +73,18 @@ export default {
 
 
         },
-        async getDataForID(id) {
-            try {
-                this.loading = true
-                const instace = axios.create({
-                    baseURL: `${rutas.ALL_PRODUCTS}/${id}`,
-                })
-
-                const { data } = await instace.get()
-
-                this.productData = data
-                this.loading = false
-
-            } catch (error) {
-                this.loading = false
-                console.log(error)
-            }
-
-        },
         async getDataForCategories(category) {
+            
             try {
                 this.loading = true
+                
 
                 const instace = axios.create({
                     baseURL: `${rutas.PRODUCTS_FOR_CATEGORY}/${category.toLowerCase()}`
 
                 })
                 const { data } = await instace.get()
+                
 
                 this.loading = false
                 this.productData = data
@@ -108,12 +94,15 @@ export default {
                 this.loading = false
             }
             this.mode = true
+            
+            
 
         }
 
 
     },
     created() {
+        
         this.loading = false
         bus.$on('getDataForCategories', (category) => { this.getDataForCategories(category) })
         bus.$on('getDataForID', (id) => { this.getDataForID(id) })
