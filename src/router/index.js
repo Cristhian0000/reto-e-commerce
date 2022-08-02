@@ -22,7 +22,10 @@ const routes = [
         component: () => import(/* webpackChunkName: "product-view" */ '../views/ProductDetailView.vue'),
         name : 'product-detail'
       },
- 
+      {
+        path: '/*',
+        redirect:"/products"
+      },
     ]
   },
   {
@@ -30,10 +33,7 @@ const routes = [
     name: 'about',
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
-  {
-    path: '/*',
-    redirect:"/"
-  },
+  
   {
     path: '**',
     component: () => import(/* webpackChunkName: "product-view" */ '../views/NotFound.vue'),
