@@ -5,7 +5,7 @@
         <div v-show="mode">
             <v-card width="250" height="400" class="card mx-3 mb-5">
 
-                <v-img @click="message(data.id)" class="pointer mt-5 mx-auto" aspect-ratio="1.7" contain :src="data.image"></v-img>
+                <v-img @click="productDetail(data.id)" class="pointer mt-5 mx-auto" aspect-ratio="1.7" contain :src="data.image"></v-img>
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                         <span v-bind="attrs" v-on="on">
@@ -34,7 +34,7 @@
                 </v-card-text>
                 <v-card-actions class="mb-5 ">
                     <v-spacer></v-spacer>
-                    <v-btn block outlined rounded color="error" >
+                    <v-btn block outlined  rounded color='error' >
                          ADD TO CART
                     </v-btn>
                     <v-spacer></v-spacer>
@@ -67,7 +67,7 @@
 
                         <v-card-actions>
                             
-                            <v-btn x-large rounded color="error">
+                            <v-btn x-large rounded color="#AAD500" dark>
                                 ADD TO CART
                             </v-btn>
                             <strong class="mx-3">{{data.rating?.count}}+ units available</strong>
@@ -90,8 +90,8 @@ export default {
     props: ['id', 'data', 'mode'],
     data() { return {} },
     methods: {
-        ProductDetail() {
-            this.$router.push('/ProductDetail')
+        productDetail() {
+            this.$router.push({name :'product-detail', params : { id : this.id}})
         },
         message(id) {
             
@@ -105,7 +105,7 @@ export default {
 
 <style scoped>
 .card:hover button{
-    background-color:#F44336!important;
+    background-color:#AAD500!important;
     color:white !important;
 
 }

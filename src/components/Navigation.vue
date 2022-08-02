@@ -7,10 +7,9 @@
             </v-list-item-title>
         </v-list-item>
 
-        <v-list-item id="items" v-for="(item, index) in items" :key="index" link 
-        @click="getCategory(item.name)  ">
+        <v-list-item id="items" v-for="(item, index) in items" :key="index" link @click="getCategory(item.name)">
             <v-list-item-icon>
-                <v-icon id="items">{{ item.icon }}</v-icon>
+                <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
                 <v-list-item-title>{{ item.name }}</v-list-item-title>
@@ -32,13 +31,20 @@ export default {
         }
     },
     methods: {
-        getCategory(category){
-            bus.$emit('getDataForCategories',category)
+        getCategory(category) {
+            
+            
+            bus.$emit('getDataForCategories', category)
+            this.$router.push({ name : 'products'}).catch(console.log)
+            
+
+            
+
         },
-        
+
     },
     mounted() {
-        
+
 
     }
 }
@@ -47,8 +53,12 @@ export default {
 
 <style scoped>
 #items {
-    color: rgb(165, 177, 189);
+    
     padding-left: 10px;
 
+}
+#items:hover{
+    background-color:#AAD500;
+    color:white
 }
 </style>

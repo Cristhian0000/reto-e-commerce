@@ -5,18 +5,45 @@
         <v-row v-if="loading">
             <SectionLoader />
         </v-row>
-
         <v-row v-else>
+            <h1 class="ml-3">Products</h1>
+            <v-tabs v-model="tab" align-with-title color="black">
+                <v-tabs-slider color="green"></v-tabs-slider>
+                <v-tab @click="getProductsForMaxRate()">
+                    Ranking
+                </v-tab>
+                <v-tab @click="getProductsForLowCost()">
+                    Low Cost
+                </v-tab>
+            </v-tabs>
+            <v-tabs-items v-model="tab">
+                <v-tab-item>
+                    <v-row v-if="loading">
+                        <section-loader />
+                    </v-row>
+                    <v-row v-else>
+                        <div v-show="mode" class="section" v-for="(item, index) in productRating" :key="index">
+                            <card-product :mode.sync="mode" :id="item.id" :data="item">
+                            </card-product>
+                        </div>
+                    </v-row>
 
 
-            <div v-show="mode" class="section" v-for="(item, index) in productData" :key="index">
-                <card-product :mode.sync="mode" :id="item.id" :data="item">
-                </card-product>
-            </div>
+                </v-tab-item>
+                <v-tab-item>
+
+                    <v-row>
+                        <div v-show="mode" class="section" v-for="(item, index) in productLowCost" :key="index">
+                            <card-product :mode.sync="mode" :id="item.id" :data="item">
+                            </card-product>
+                        </div>
+                    </v-row>
+
+                </v-tab-item>
+            </v-tabs-items>
 
 
-
-            <div v-show="!mode" class="details" v-if="productData!==null? productData:''">
+            <!-- <div v-show="!mode" class="details" v-if="productData!==null? productData:''">
 
                 <card-product :mode.sync="mode" :id="productData.id" :data="productData">
                 </card-product>
@@ -29,8 +56,25 @@
 
             </div>
 
+            <div v-show="mode" class="section" v-for="(item, index) in productData" :key="index">
+                <card-product :mode.sync="mode" :id="item.id" :data="item">
+                </card-product>
+            </div> -->
 
         </v-row>
+        <v-row>
+
+            <h1>List Products</h1>
+
+        </v-row>
+        <v-row>
+            <list-product></list-product>
+        </v-row>
+        <v-row>
+
+        </v-row>
+        
+
     </div>
 
 
@@ -40,65 +84,86 @@
 import axios from 'axios'
 import CardProduct from '@/components/CardProduct.vue'
 import rutas from "../utileria/rutas.js"
-import bus from '../utileria/eventBus'
+// import bus from '../utileria/eventBus'
 import SectionLoader from '@/components/loaders/SectionLoader.vue'
+
+import ListProduct from '@/components/ListProduct.vue'
+
+
+
 export default {
-    components: { CardProduct, SectionLoader },
+    components: {
+        CardProduct,
+        SectionLoader,
+        ListProduct,
+
+    },
     name: 'ProductPage',
 
     data() {
         return {
             id: null,
-            productData: null,
+            // productData: null,
+            productRating: null,
+            productLowCost: null,
             mode: true,
-            loading: true
+            loading: true,
+            tab: null
+
         }
     },
     methods: {
-        async getData() {
+        async getProductsForLowCost() {
             try {
-                this.loading = true
+
                 const instace = axios.
                     create({
                         baseURL: rutas.ALL_PRODUCTS,
                     })
                 const { data } = await instace.get()
-                this.productData = data
+
+                const LowCost = data.sort((a, b) => (a.price - b.price)).slice(0, 4)
+                this.productLowCost = LowCost
+
 
             } catch (error) {
-
                 console.log(error)
             }
 
-
         },
-        async getDataForID(id) {
+        async getProductsForMaxRate() {
             try {
-                this.loading = true
-                const instace = axios.create({
-                    baseURL: `${rutas.ALL_PRODUCTS}/${id}`,
-                })
 
+                const instace = axios.
+                    create({
+                        baseURL: rutas.ALL_PRODUCTS,
+                    })
                 const { data } = await instace.get()
 
-                this.productData = data
-                this.loading = false
+                const maxRanking = data.sort((a, b) => (a.rating.rate - b.rating.rate)).reverse().slice(0, 4)
+                this.productRating = maxRanking
+
+
+
+
 
             } catch (error) {
-                this.loading = false
                 console.log(error)
             }
 
         },
         async getDataForCategories(category) {
+
             try {
                 this.loading = true
+
 
                 const instace = axios.create({
                     baseURL: `${rutas.PRODUCTS_FOR_CATEGORY}/${category.toLowerCase()}`
 
                 })
                 const { data } = await instace.get()
+
 
                 this.loading = false
                 this.productData = data
@@ -109,14 +174,21 @@ export default {
             }
             this.mode = true
 
-        }
 
+
+        },
+      
 
     },
     created() {
+
         this.loading = false
-        bus.$on('getDataForCategories', (category) => { this.getDataForCategories(category) })
-        bus.$on('getDataForID', (id) => { this.getDataForID(id) })
+        this.getProductsForMaxRate()
+        this.getProductsForLowCost()
+        
+
+        // bus.$on('getDataForCategories', (category) => { this.getDataForCategories(category) })
+        // bus.$on('getDataForID', (id) => { this.getDataForID(id) })
 
     },
 
