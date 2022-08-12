@@ -7,7 +7,7 @@
       <li>Rate</li>
 
     </ul>
-    <ul @click="productDetail(item.id)" class="product-list-rows" v-for="(item,index)  in productData" :key="index" >
+    <ul @click="productDetail(item.id)" class="product-list-rows" v-for="(item, index)  in productData" :key="index">
       <li>
         <v-avatar size="50" rounded>
           <v-img width="mx-auto" spect-ratio="1.7" :src="item.image" contain></v-img>
@@ -18,58 +18,54 @@
       <li>{{ item.category }}</li>
       <li>{{ item.rating.rate }}</li>
     </ul>
-     <div class="text-align-center">
-                <v-pagination
-      v-model="page"
-      @input="navigationProducts(page)"
-      :length="4"
-      circle
-    ></v-pagination>
-            </div>
+    <div class="text-align-center">
+      <v-pagination value="0" v-model="page" @input="navigationProducts(page)" :length="4" circle></v-pagination>
+    </div>
   </div>
   <div v-else>
-<h2 >Product Not Found</h2>
-    
+    <h2>Product Not Found</h2>
+
   </div>
 </template>
 
 <script>
-import { mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: "listProductComponent",
-  data () {
-    return{
-      page:1,
-      productData:[]
+  data() {
+    return {
+      page: 1,
+      productData: []
     }
   },
-  methods:{
+  methods: {
     productDetail(id) {
-      this.$router.push({name :'product-detail', params : { id}})
+      this.$router.push({ name: 'product-detail', params: { id } })
     },
 
-    navigationProducts(page){
-    let inicio=page
-    let final=5
-     if(inicio===1){
-      this.productData = this.products.slice(0,final)  
-     }
-     else{
-      inicio=(final*page-5)
-      final=final*page  
-      this.productData = this.products.slice(inicio,final)  
+    navigationProducts(page) {
+      let inicio = page
+      let final = 5
+      if (inicio === 1) {
+        this.productData = this.products.slice(0, final)
       }
-    
+      else {
+        inicio = (final * page - 5)
+        final = final * page
+        this.productData = this.products.slice(inicio, final)
+      }
+
     }
-    
+
   },
-  created(){
+  created() {
     this.$store.dispatch('products/getData');
-     this.navigationProducts(this.page)
+    this.navigationProducts(this.page)
   },
-  computed:{
-    ...mapGetters('products',['products']),
+
+  computed: {
+    ...mapGetters('products', ['products']),
   }
 
 }
@@ -77,7 +73,7 @@ export default {
 
 <style scoped>
 .product-list-table-header {
-  width: 100%;
+  width: auto;
   list-style: none;
   display: grid;
   grid-template-columns: 3fr 2fr 2fr 1fr;
@@ -89,9 +85,12 @@ export default {
   padding-bottom: .5rem;
 
 }
+.product-list-table-header li{
+  margin:15px;
+}
 
 .product-list-rows {
-  width: 100%;
+  width: auto;
   list-style: none;
   display: grid;
   grid-template-columns: 3fr 2fr 2fr 1fr;
@@ -100,7 +99,9 @@ export default {
   font-size: .9rem;
 
 }
-
+.product-list-rows li{
+  margin: 10px;
+}
 .product-list-rows:hover {
   cursor: pointer;
 

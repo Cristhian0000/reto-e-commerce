@@ -1,23 +1,27 @@
 <template>
-  <div>
+  <v-container>
     <v-row v-if="loading">
       <section-loader />
     </v-row>
 
     <v-row v-else>
-
-      <div v-show="!mode" class="details" v-if="productData !== null ? productData : ''">
+      <v-col cols="10" xs="12" md="12">
+<div v-show="!mode" class="details" v-if="productData !== null ? productData : ''">
 
         <card-product :mode.sync="mode" :id="productData.id" :data="productData">
         </card-product>
-        <div>
+        
+      </div>
+      
+      </v-col>
+      <div class="mt-4">
           <h1>Description</h1>
           <p class="text-justify">{{ this.productData?.description }}</p>
+          
         </div>
 
-      </div>
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>

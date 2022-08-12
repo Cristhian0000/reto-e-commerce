@@ -3,6 +3,8 @@ Una tienda virtual con [javaScript](https://developer.mozilla.org/es/docs/Web/Ja
 ## **Descripción**
 La tienda virtual esta escrita con el lenguaje javaScript, empleando el framework Vue js
 ## **Programacion de la tienda virtual**
+- Cuenta con un Login para que los usuarios puedan acceder a su cuenta.
+- Si la cuenta o la contraseña no son validas no lo permitirá navegar a las distintas paginas de la e-commerce 
 - La tienda virtual visualiza los 4 productos con mayor rating, ademas de los productos con Bajo costo
 - Al selccionar una card, te direcciona al detalle del producto 
 - Cuenta con una busqueda que muestra los productos que coinciden con el valor buscado. 
