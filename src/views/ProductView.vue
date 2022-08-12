@@ -19,7 +19,10 @@
             <v-tabs-items v-model="tab">
                 <v-tab-item>
                     <v-row v-if="loading">
-                        <section-loader />
+        
+                            <section-loader />
+
+
                     </v-row>
                     <v-row v-else>
                         <div v-show="mode" class="section" v-for="(item, index) in productRating" :key="index">
@@ -42,25 +45,6 @@
                 </v-tab-item>
             </v-tabs-items>
 
-
-            <!-- <div v-show="!mode" class="details" v-if="productData!==null? productData:''">
-
-                <card-product :mode.sync="mode" :id="productData.id" :data="productData">
-                </card-product>
-
-
-                <div>
-                    <h1>Description</h1>
-                    <p class="text-justify">{{ this.productData?.description }}</p>
-                </div>
-
-            </div>
-
-            <div v-show="mode" class="section" v-for="(item, index) in productData" :key="index">
-                <card-product :mode.sync="mode" :id="item.id" :data="item">
-                </card-product>
-            </div> -->
-
         </v-row>
         <v-row>
 
@@ -70,10 +54,8 @@
         <v-row>
             <list-product></list-product>
         </v-row>
-        <v-row>
-
-        </v-row>
         
+
 
     </div>
 
@@ -84,7 +66,6 @@
 import axios from 'axios'
 import CardProduct from '@/components/CardProduct.vue'
 import rutas from "../utileria/rutas.js"
-// import bus from '../utileria/eventBus'
 import SectionLoader from '@/components/loaders/SectionLoader.vue'
 
 import ListProduct from '@/components/ListProduct.vue'
@@ -103,7 +84,7 @@ export default {
     data() {
         return {
             id: null,
-            // productData: null,
+            
             productRating: null,
             productLowCost: null,
             mode: true,
@@ -133,13 +114,13 @@ export default {
         },
         async getProductsForMaxRate() {
             try {
-
+            
                 const instace = axios.
                     create({
                         baseURL: rutas.ALL_PRODUCTS,
                     })
                 const { data } = await instace.get()
-
+            
                 const maxRanking = data.sort((a, b) => (a.rating.rate - b.rating.rate)).reverse().slice(0, 4)
                 this.productRating = maxRanking
 
@@ -177,7 +158,7 @@ export default {
 
 
         },
-      
+
 
     },
     created() {
@@ -185,11 +166,6 @@ export default {
         this.loading = false
         this.getProductsForMaxRate()
         this.getProductsForLowCost()
-        
-
-        // bus.$on('getDataForCategories', (category) => { this.getDataForCategories(category) })
-        // bus.$on('getDataForID', (id) => { this.getDataForID(id) })
-
     },
 
     mounted() {
@@ -215,4 +191,5 @@ export default {
 .details {
     margin-top: 50px;
 }
+
 </style>

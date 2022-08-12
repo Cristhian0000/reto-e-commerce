@@ -3,13 +3,13 @@
     <div>
         <!-- card small -->
         <div v-show="mode">
-            <v-card width="250" height="400" class="card mx-3 mb-5">
+            <v-card width="250" height="400" class="card mx-4 mb-5">
 
                 <v-img @click="productDetail(data.id)" class="pointer mt-5 mx-auto" aspect-ratio="1.7" contain :src="data.image"></v-img>
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                         <span v-bind="attrs" v-on="on">
-                            <v-card-title @click="message(data.id)"  class="title">{{ data.title?.substring(0, 30) }}...
+                            <v-card-title   class="title">{{ data.title?.substring(0, 30) }}...
                             </v-card-title>
                         </span>
                     </template>
@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import bus from '@/utileria/eventBus'
 
 export default {
     name: "CardProductComponent",
@@ -93,12 +92,7 @@ export default {
         productDetail() {
             this.$router.push({name :'product-detail', params : { id : this.id}})
         },
-        message(id) {
-            
-            bus.$emit('getDataForID',id)
-            this.$emit('update:mode', false)
-            
-        }
+     
     }
 }
 </script>
