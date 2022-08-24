@@ -1,7 +1,4 @@
-<template>
-
-
-  
+<template>  
 <v-app-bar fixed color="#AAD500" dense class="mb-5">
     <v-app-bar-nav-icon></v-app-bar-nav-icon>
     <v-toolbar-title class="hidden-xs-only">Check our products</v-toolbar-title>
@@ -29,8 +26,15 @@
     <card-session></card-session>
 
     <v-btn icon>
-      <v-icon>mdi-cart-outline</v-icon>
-      <p v-show="false">0</p>
+      <v-badge :content="cart.length"
+      :value="cart.length"
+      color="red"
+      overlap
+      >
+        <v-icon>mdi-cart-outline</v-icon>
+
+      </v-badge>
+
     </v-btn>
 
   </v-app-bar>
@@ -70,7 +74,7 @@ export default {
     this.$store.dispatch('products/getData')
   },
   computed: {
-    ...mapGetters('products', ['products', 'products']),
+    ...mapGetters('products', ['products','cart']),
 
 
   },

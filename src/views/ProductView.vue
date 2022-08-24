@@ -19,8 +19,8 @@
             <v-tabs-items v-model="tab">
                 <v-tab-item>
                     <v-row v-if="loading">
-        
-                            <section-loader />
+
+                        <section-loader />
 
 
                     </v-row>
@@ -54,7 +54,7 @@
         <v-row>
             <list-product></list-product>
         </v-row>
-        
+
 
 
     </div>
@@ -84,7 +84,7 @@ export default {
     data() {
         return {
             id: null,
-            
+
             productRating: null,
             productLowCost: null,
             mode: true,
@@ -114,13 +114,13 @@ export default {
         },
         async getProductsForMaxRate() {
             try {
-            
+
                 const instace = axios.
                     create({
                         baseURL: rutas.ALL_PRODUCTS,
                     })
                 const { data } = await instace.get()
-            
+
                 const maxRanking = data.sort((a, b) => (a.rating.rate - b.rating.rate)).reverse().slice(0, 4)
                 this.productRating = maxRanking
 
@@ -191,5 +191,4 @@ export default {
 .details {
     margin-top: 50px;
 }
-
 </style>
