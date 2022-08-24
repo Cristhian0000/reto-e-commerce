@@ -7,7 +7,7 @@
             </v-list-item-title>
         </v-list-item>
 
-        <v-list-item id="items" v-for="(item, index) in items" :key="index" link @click="getCategory(item.name)">
+        <v-list-item id="items" v-for="(item, index) in items" :key="index" link @click="getCategory()">
             <v-list-item-icon>
                 <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import bus from '../utileria/eventBus'
+
 export default {
     name: 'navigationComponent',
     props: ['title', 'items'],
@@ -31,10 +31,9 @@ export default {
         }
     },
     methods: {
-        getCategory(category) {
+         // eslint-disable-next-line 
+        getCategory() {
             
-            
-            bus.$emit('getDataForCategories', category)
             this.$router.push({ name : 'products'}).catch(console.log)
             
 

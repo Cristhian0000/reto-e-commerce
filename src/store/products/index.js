@@ -5,13 +5,15 @@ const productStore = {
   state: () => ({
     productData: [],
     productsAll: [],
-    
+    cartProduct: [],
   }),
   getters: {
     products(state) {
       return state.productData;
     },
- 
+    cart(state) {
+      return state.cartProduct;
+    },
   },
 
   mutations: {
@@ -20,11 +22,27 @@ const productStore = {
       state.productsAll = data;
     },
 
+    setCartProduct(state, value) {
+     
+     if(!state.cartProduct.length){
+      state.cartProduct.unshift(value);
+     }
+     else{
+      const existe= state.cartProduct.findIndex(p=>p.id===value.id)
+      console.log(existe)
+      if(existe===-1){
+        
+        state.cartProduct.unshift(value);
+      }
+     }
+
+    },
+
     searchTopBar(state, value) {
       if (!value) {
         state.productData = state.productsAll;
       } else {
-      state.productsAll.filter((el) => {
+        state.productsAll.filter((el) => {
           return el.title.toLowerCase().indexOf(value.toLowerCase()) >= 0;
         });
       }
@@ -43,6 +61,9 @@ const productStore = {
       } catch (error) {
         console.log(error);
       }
+    },
+    addCartProduct({ commit }, { product }) {
+      commit("setCartProduct", product);
     },
 
     async searchTopBar({ commit }, { search }) {

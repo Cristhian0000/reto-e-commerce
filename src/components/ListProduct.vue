@@ -1,42 +1,41 @@
 <template>
-  <div class="my-5" v-if="products.length">
-    <ul class="product-list-table-header">
-      <li>Product</li>
-      <li>Price</li>
-      <li>Category</li>
-      <li>Rate</li>
+  <v-data-table  v-if="products"
+  item-key="name"
+  item-class="row"
+   light :headers="headers" :items="products">
+   <!-- eslint-disable-next-line -->
+     <template   v-slot:item.title="{ item } " >
+      <v-avatar @click="productDetail(item.id)" size="40" rounded class="m-3 poiter">
+        <v-img class="mx-auto" aspect-ratio="1.7" contain :src="item.image"></v-img>
+      </v-avatar>
+      {{ item.title }}
+    </template>
+  </v-data-table>
+<v-data-table v-else 
+light :headers="headers" loading
+loading-text="Loading... Please wait"
+>
 
-    </ul>
-    <ul @click="productDetail(item.id)" class="product-list-rows" v-for="(item, index)  in productData" :key="index">
-      <li>
-        <v-avatar size="50" rounded>
-          <v-img width="mx-auto" spect-ratio="1.7" :src="item.image" contain></v-img>
-        </v-avatar>
-        {{ item.title }}
-      </li>
-      <li>{{ item.price }}</li>
-      <li>{{ item.category }}</li>
-      <li>{{ item.rating.rate }}</li>
-    </ul>
-    <div class="text-align-center">
-      <v-pagination value="0" v-model="page" @input="navigationProducts(page)" :length="4" circle></v-pagination>
-    </div>
-  </div>
-  <div v-else>
-    <h2>Product Not Found</h2>
+</v-data-table>
 
-  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-
+  
 export default {
   name: "listProductComponent",
   data() {
     return {
       page: 1,
-      productData: []
+      productData: [],
+      headers: [
+        { text: 'Product', value: 'title',width:'100vh'},
+        { text: 'Price', value: 'price',width:'100%' },
+        { text: 'Category', value: 'category',width:'100%' },
+        { text: 'Rate', value: 'rating.rate',sortable: false,}
+        
+        ]
     }
   },
   methods: {
@@ -44,66 +43,25 @@ export default {
       this.$router.push({ name: 'product-detail', params: { id } })
     },
 
-    navigationProducts(page) {
-      let inicio = page
-      let final = 5
-      if (inicio === 1) {
-        this.productData = this.products.slice(0, final)
-      }
-      else {
-        inicio = (final * page - 5)
-        final = final * page
-        this.productData = this.products.slice(inicio, final)
-      }
-
-    }
-
   },
   created() {
     this.$store.dispatch('products/getData');
-    this.navigationProducts(this.page)
+    
+
   },
 
   computed: {
     ...mapGetters('products', ['products']),
+
   }
 
 }
 </script>
 
 <style scoped>
-.product-list-table-header {
-  width: auto;
-  list-style: none;
-  display: grid;
-  grid-template-columns: 3fr 2fr 2fr 1fr;
-  margin: 0;
-  padding: 0;
-  font-size: 90%;
-  letter-spacing: 1px;
-  border-bottom: solid 1px black;
-  padding-bottom: .5rem;
 
-}
-.product-list-table-header li{
-  margin:15px;
-}
-
-.product-list-rows {
-  width: auto;
-  list-style: none;
-  display: grid;
-  grid-template-columns: 3fr 2fr 2fr 1fr;
-  margin: 0;
-  padding: 1rem 0 0 0;
-  font-size: .9rem;
-
-}
-.product-list-rows li{
-  margin: 10px;
-}
-.product-list-rows:hover {
+.poiter{
   cursor: pointer;
-
 }
+
 </style>
