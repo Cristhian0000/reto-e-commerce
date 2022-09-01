@@ -6,19 +6,19 @@
 
     <v-row v-else>
       <v-col cols="10" xs="12" md="12">
-<div v-show="!mode" class="details" v-if="productData !== null ? productData : ''">
+        <div v-show="!mode" class="details" v-if="productData !== null ? productData : ''">
 
-        <card-product :mode.sync="mode" :id="productData.id" :data="productData">
-        </card-product>
-        
-      </div>
-      
+          <card-product :mode.sync="mode" :id="productData.id" :data="productData">
+          </card-product>
+
+        </div>
+
       </v-col>
       <div class="mt-4">
-          <h1>Description</h1>
-          <p class="text-justify">{{ this.productData?.description }}</p>
-          
-        </div>
+        <h1>Description</h1>
+        <p class="text-justify">{{ this.productData?.description }}</p>
+
+      </div>
 
     </v-row>
   </v-container>
@@ -28,7 +28,7 @@
 import axios from 'axios'
 import CardProduct from '@/components/CardProduct.vue'
 import rutas from "../utileria/rutas.js"
-
+import VueCookies from "vue-cookies";
 import SectionLoader from '@/components/loaders/SectionLoader.vue'
 export default {
   components: { CardProduct, SectionLoader },
@@ -46,17 +46,20 @@ export default {
     async getDataForID(id) {
       try {
         this.loading = true
-        id=this.$route.params.id
-        const instace = axios.create({
+        id = this.$route.params.id
+        const instance = axios.create({
           baseURL: `${rutas.ALL_PRODUCTS}/${id}`,
-        })
 
-        const { data } = await instace.get()
-        if(!data){
-          
-          this.$router.push({name : '404'});
+        })
+        const token = VueCookies.get("token_ecommerce");
+        instance.defaults.headers.common["Authorization"] = "Bearer " + token;
+
+        const { data } = await instance.get()
+        if (!data) {
+
+          this.$router.push({ name: '404' });
         }
-        
+
         this.productData = data
         this.loading = false
 

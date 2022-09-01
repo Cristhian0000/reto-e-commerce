@@ -67,7 +67,7 @@ import axios from 'axios'
 import CardProduct from '@/components/CardProduct.vue'
 import rutas from "../utileria/rutas.js"
 import SectionLoader from '@/components/loaders/SectionLoader.vue'
-
+import VueCookies from "vue-cookies";
 import ListProduct from '@/components/ListProduct.vue'
 
 
@@ -97,12 +97,13 @@ export default {
         async getProductsForLowCost() {
             try {
 
-                const instace = axios.
+                const instance = axios.
                     create({
                         baseURL: rutas.ALL_PRODUCTS,
                     })
-                const { data } = await instace.get()
-
+                    const token = VueCookies.get("token_ecommerce");
+                    instance.defaults.headers.common["Authorization"] = "Bearer " + token;
+                const { data } = await instance.get()
                 const LowCost = data.sort((a, b) => (a.price - b.price)).slice(0, 4)
                 this.productLowCost = LowCost
 
@@ -115,11 +116,13 @@ export default {
         async getProductsForMaxRate() {
             try {
 
-                const instace = axios.
+                const instance = axios.
                     create({
                         baseURL: rutas.ALL_PRODUCTS,
                     })
-                const { data } = await instace.get()
+                const token = VueCookies.get("token_ecommerce");
+                instance.defaults.headers.common["Authorization"] = "Bearer " + token;
+                const { data } = await instance.get()
 
                 const maxRanking = data.sort((a, b) => (a.rating.rate - b.rating.rate)).reverse().slice(0, 4)
                 this.productRating = maxRanking
@@ -139,11 +142,13 @@ export default {
                 this.loading = true
 
 
-                const instace = axios.create({
+                const instance = axios.create({
                     baseURL: `${rutas.PRODUCTS_FOR_CATEGORY}/${category.toLowerCase()}`
 
                 })
-                const { data } = await instace.get()
+                const token = VueCookies.get("token_ecommerce");
+                instance.defaults.headers.common["Authorization"] = "Bearer " + token;
+                const { data } = await instance.get()
 
 
                 this.loading = false

@@ -46,12 +46,14 @@ const authStore = {
         });
 
         const { status, data } = await instance.post("/login", user);
-        const { token } = data;
+
+        const { accessToken } = data;
+
 
         if (status === 200) {
           commit("setCredentials", user);
           commit("setLoggedIn");
-          VueCookies.set("token_ecommerce", token, "1h");
+          VueCookies.set("token_ecommerce", accessToken, "1h");
         }
       } catch (error) {
         return;

@@ -1,5 +1,6 @@
 import axios from "axios";
 import rutas from "../../utileria/rutas.js";
+import VueCookies from "vue-cookies";
 const productStore = {
   namespaced: true,
   state: () => ({
@@ -23,19 +24,15 @@ const productStore = {
     },
 
     setCartProduct(state, value) {
-     
-     if(!state.cartProduct.length){
-      state.cartProduct.unshift(value);
-     }
-     else{
-      const existe= state.cartProduct.findIndex(p=>p.id===value.id)
-      console.log(existe)
-      if(existe===-1){
-        
+      if (!state.cartProduct.length) {
         state.cartProduct.unshift(value);
+      } else {
+        const existe = state.cartProduct.findIndex((p) => p.id === value.id);
+        
+        if (existe === -1) {
+          state.cartProduct.unshift(value);
+        }
       }
-     }
-
     },
 
     searchTopBar(state, value) {
@@ -52,10 +49,13 @@ const productStore = {
   actions: {
     async getData({ commit }) {
       try {
-        const instace = axios.create({
+        const instance = axios.create({
           baseURL: rutas.ALL_PRODUCTS,
         });
-        const { data } = await instace.get();
+        const token = VueCookies.get("token_ecommerce");
+        
+        instance.defaults.headers.common["Authorization"] = "Bearer " + token;
+        const { data } = await instance.get();
 
         commit("setProducts", data);
       } catch (error) {

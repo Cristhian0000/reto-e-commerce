@@ -1,6 +1,6 @@
 const rutas = {
-  ALL_PRODUCTS: "https://fakestoreapi.com/products",
+  ALL_PRODUCTS: "http://localhost:3000/products",
   PRODUCTS_FOR_CATEGORY: "https://fakestoreapi.com/products/category",
-  AUTHENTICATION:"https://fakestoreapi.com/auth"
+  AUTHENTICATION: "http://localhost:3000/auth",
 };
 export default rutas;
